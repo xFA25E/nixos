@@ -69,9 +69,10 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    checkbashisms conky dash emacs fd file fzf git htop leiningen mpd mpop mpv
-    msmtp qutebrowser ripgrep rofi rxvt_unicode sbcl shellcheck stalonetray
-    sxhkd twmn xbindkeys youtube-dl
+    checkbashisms conky dash emacs fd feh file fzf git htop leiningen mpd mpop
+    mpv msmtp qutebrowser ripgrep rofi rxvt_unicode sbcl shellcheck stalonetray
+    stow sxhkd twmn xbindkeys youtube-dl lemonbar xdo source-code-pro
+    liberation_ttf mu
     # zathura                     # disabled because stem package is broken
   ];
 
