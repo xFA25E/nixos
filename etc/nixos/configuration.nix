@@ -27,6 +27,7 @@
 # swapon /dev/sda2
 # nixos-generate-config --root /mnt
 
+# END
 # nixos-install
 # reboot
 
