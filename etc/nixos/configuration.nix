@@ -62,6 +62,7 @@
     keyMap = "dvorak";
   };
 
+  # Set your time zone.
   time.timeZone = "Europe/Rome";
 
   # List packages installed in system profile. To search, run:
