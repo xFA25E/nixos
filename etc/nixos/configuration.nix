@@ -1,42 +1,55 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
+# MBR
+# parted /dev/sda -- mklabel msdos
+# parted /dev/sda -- mkpart primary 1MiB -40GiB
+# parted /dev/sda -- mkpart primary linux-swap -40GiB 100%
+# mkfs.ext4 -L nixos /dev/sda1
+# mkswap -L swap /dev/sda2
+# mount /dev/disk/by-label/nixos /mnt
+# swapon /dev/sda2
+# nixos-generate-config --root /mnt
+
+# UEFI
+# parted /dev/sda -- mklabel gpt
+# parted /dev/sda -- mkpart primary 512MiB -40GiB
+# parted /dev/sda -- mkpart primary linux-swap -40GiB 100%
+# parted /dev/sda -- mkpart ESP fat32 1MiB 512MiB
+# parted /dev/sda -- set 3 boot on
+# mkfs.ext4 -L nixos /dev/sda1
+# mkswap -L swap /dev/sda2
+# mkfs.fat -F 32 -n boot /dev/sda3
+# mount /dev/disk/by-label/nixos /mnt
+# mkdir -p /mnt/boot
+# mount /dev/disk/by-label/boot /mnt/boot
+# swapon /dev/sda2
+# nixos-generate-config --root /mnt
+
+# nixos-install
+# reboot
 
 { config, pkgs, ... }:
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
       ./hardware-configuration.nix
     ];
 
-  # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
-  # boot.loader.grub.efiSupport = true;
-  # boot.loader.grub.efiInstallAsRemovable = true;
-  # boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  # Define on which hard drive you want to install Grub.
+  boot.loader.grub.efiSupport = true;
+
   boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
 
   networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.wireless.enable = true;
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Select internationalisation properties.
-  i18n = {
-    consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "dvorak";
-    defaultLocale = "en_US.UTF-8";
-  };
+  console.Font = "Lat2-Terminus16";
+  console.keyMap = "dvorak";
+  i18n.defaultLocale = "en_US.UTF-8";
 
-  # Set your time zone.
   time.timeZone = "Europe/Rome";
 
-  # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     checkbashisms
@@ -67,59 +80,43 @@
     zathura
   ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-  services.openssh.permitRootLogin = "yes";
+  programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
 
   security.sudo.enable = true;
   security.sudo.configFile = ''
     %wheel ALL=(ALL) ALL
   '';
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
 
-  # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.displayManager.startx.enable = true;
-  services.xserver.desktopManager.default = "none";
+  services.xserver.displayManager.defaultSession = "none";
   services.xserver.desktopManager.xterm.enable = false;
   services.xserver.windowManager.bspwm.enable = true;
   services.xserver.layout = "dvorak";
   services.xserver.xkbOptions = "ctrl:nocaps";
-
-  # Enable touchpad support.
   services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.val = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "audio" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "networkmanager" "audio" ];
   };
-
-  virtualisation.virtualbox.guest.enable = true;
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
   # servers. You should change this only after NixOS release notes say you
   # should.
-  system.stateVersion = "19.03"; # Did you read the comment?
+  system.stateVersion = "20.03"; # Did you read the comment?
+
+  # uefi
+  # boot.loader.systemd-boot.enable = true;
+
+  # virtualbox
+  # virtualisation.virtualbox.guest.enable = true;
+  # services.openssh.enable = true;
+  # services.openssh.permitRootLogin = "yes";
 
 }
