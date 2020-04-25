@@ -76,6 +76,8 @@
     # zathura                     # disabled because stem package is broken
   ];
 
+  # nixpkgs.config.allowBroken = true; # hack, because stem package is broken
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs.gnupg.agent = {
