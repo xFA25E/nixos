@@ -14,8 +14,8 @@
 
 # UEFI
 # parted /dev/sda -- mklabel gpt
-# parted /dev/sda -- mkpart primary 512MiB -40GiB
-# parted /dev/sda -- mkpart primary linux-swap -40GiB 100%
+# parted /dev/sda -- mkpart primary 512MiB -8GiB
+# parted /dev/sda -- mkpart primary linux-swap -8GiB 100%
 # parted /dev/sda -- mkpart ESP fat32 1MiB 512MiB
 # parted /dev/sda -- set 3 boot on
 # mkfs.ext4 -L nixos /dev/sda1
@@ -42,7 +42,7 @@
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
-  boot.loader.grub.efiSupport = true;
+  # boot.loader.grub.efiSupport = true; # uefi
   # Define on which hard drive you want to install Grub.
   boot.loader.grub.device = "/dev/sda";
   # boot.loader.systemd-boot.enable = true; # uefi
