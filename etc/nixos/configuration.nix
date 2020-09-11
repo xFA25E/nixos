@@ -69,11 +69,15 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    checkbashisms conky dash emacs fd feh file fzf git htop leiningen mpd mpop
-    mpv msmtp qutebrowser ripgrep rofi rxvt_unicode sbcl shellcheck stalonetray
-    stow sxhkd twmn xbindkeys youtube-dl lemonbar xdo source-code-pro xtitle
-    liberation_ttf mu
+    cargo checkbashisms conky dash emacs fd feh file fzf git htop leiningen lemonbar mpd
+    mpop mpv msmtp mu pcre qutebrowser ripgrep rofi rustc sbcl shellcheck stalonetray stow
+    twmn xbindkeys xdo xdotool xtitle youtube-dl
+
     # zathura                     # disabled because stem package is broken
+
+    dejavu_fonts iosevka hack-font                   # fonts
+
+    xorg.libX11 libxkbcommon xorg.libxcb alsaLib gcc # build deps
   ];
 
   # nixpkgs.config.allowBroken = true; # hack, because stem package is broken
@@ -107,8 +111,21 @@
   # Enable the KDE Desktop Environment.
   services.xserver.displayManager.startx.enable = true;
   services.xserver.displayManager.defaultSession = "none";
-  services.xserver.desktopManager.xterm.enable = false;
   services.xserver.windowManager.bspwm.enable = true;
+
+  # users = let secrets = import ./secrets.nix;
+  #         in {
+  #           defaultUserShell = pkgs.zsh;
+  #           mutableUsers = false;
+  #           users.root.hashedPassword = secrets.root.hashedPassword;
+  #           extraUsers.adomas = {
+  #             hashedPassword = secrets.adomas.hashedPassword;
+  #             isNormalUser = true;
+  #             uid = 1000;
+  #             extraGroups = [ "video" "wheel" ];
+  #             shell = pkgs.zsh;
+  #           };
+  #         };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.val = {
