@@ -69,13 +69,15 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    cargo checkbashisms conky dash emacs fd feh file fzf git htop leiningen lemonbar mpd
+    cargo checkbashisms conky dash emacs fd feh file git htop leiningen lemonbar mpd
     mpop mpv msmtp mu pcre qutebrowser ripgrep rofi rustc sbcl shellcheck stalonetray stow
     twmn xbindkeys xdo xdotool xtitle youtube-dl
 
     # zathura                     # disabled because stem package is broken
 
     dejavu_fonts iosevka hack-font                   # fonts
+
+    xkb-switch
 
     xorg.libX11 libxkbcommon xorg.libxcb alsaLib gcc # build deps
   ];
@@ -102,8 +104,9 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.layout = "dvorak";
-  services.xserver.xkbOptions = "ctrl:nocaps";
+  services.xserver.layout = "dvorak,ru";
+  services.xserver.xkbVariant = ",ruu"
+  services.xserver.xkbOptions = "ctrl:swapcaps,grp:shifts_toggle";
 
   # Enable touchpad support.
   services.xserver.libinput.enable = true;
