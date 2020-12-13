@@ -73,6 +73,12 @@
     iosevka leiningen libfixposix libreoffice-7.0.3.1 mpd mpop mpv msmtp mu pcre
     pcre2 qutebrowser ripgrep rustup sbcl shellcheck sloccount stalonetray stow
     telegram-desktop xdo xdotool youtube-dl
+
+    zip xz password-store pass-otp
+    xclip woof aria2 transmission sxiv syncthing
+    simplescreenrecorder sdcv mtpfs rsync qtox qrencode
+    pwgen pulsemixer p7zip ledger jq
+    # xgetres, task-spooler - no package?
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -105,7 +111,7 @@
   # Enable the KDE Desktop Environment.
   services.xserver.displayManager.startx.enable = true;
   services.xserver.displayManager.defaultSession = "none";
-  services.xserver.windowManager.bspwm.enable = true;
+  # services.xserver.windowManager.bspwm.enable = true;
 
   # users = let secrets = import ./secrets.nix;
   #         in {
