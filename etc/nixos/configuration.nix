@@ -69,20 +69,11 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    cargo checkbashisms conky dash emacs fd feh file git htop leiningen lemonbar mpd
-    mpop mpv msmtp mu pcre qutebrowser ripgrep rofi rustc sbcl shellcheck stalonetray stow
-    twmn xbindkeys xdo xdotool xtitle youtube-dl
-
-    # zathura                     # disabled because stem package is broken
-
-    dejavu_fonts iosevka hack-font                   # fonts
-
-    xkb-switch
-
-    xorg.libX11 libxkbcommon xorg.libxcb alsaLib gcc # build deps
+    checkbashisms dejavu-fonts dmenu dash emacs fd feh hack-font file git htop
+    iosevka leiningen libfixposix libreoffice-7.0.3.1 mpd mpop mpv msmtp mu pcre
+    pcre2 qutebrowser ripgrep rustup sbcl shellcheck sloccount stalonetray stow
+    telegram-desktop xdo xdotool youtube-dl
   ];
-
-  # nixpkgs.config.allowBroken = true; # hack, because stem package is broken
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
