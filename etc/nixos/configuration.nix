@@ -69,7 +69,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    checkbashisms dejavu-fonts dmenu dash emacs fd feh hack-font file git htop
+    checkbashisms dejavu-fonts dmenu dash emacs fd hack-font file git htop
     iosevka leiningen libfixposix libreoffice-7.0.3.1 mpd mpop mpv msmtp mu pcre
     pcre2 qutebrowser ripgrep rustup sbcl shellcheck sloccount stalonetray stow
     telegram-desktop xdo xdotool youtube-dl
