@@ -111,7 +111,7 @@
   # Enable the KDE Desktop Environment.
   services.xserver.displayManager.startx.enable = true;
   services.xserver.displayManager.defaultSession = "none";
-  # services.xserver.windowManager.bspwm.enable = true;
+  services.xserver.windowManager.stumpwm.enable = true;
 
   # users = let secrets = import ./secrets.nix;
   #         in {
