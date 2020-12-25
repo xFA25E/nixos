@@ -72,7 +72,7 @@
     checkbashisms dejavu-fonts dmenu dash emacs fd hack-font file git htop
     iosevka leiningen libfixposix libreoffice-7.0.3.1 mpd mpop mpv msmtp mu pcre
     pcre2 qutebrowser ripgrep rustup sbcl shellcheck sloccount stalonetray stow
-    telegram-desktop xdo xdotool youtube-dl
+    telegram-desktop xdo xdotool youtube-dl ungoogled-chromium firefox
 
     zip xz password-store pass-otp
     xclip woof aria2 transmission sxiv syncthing
