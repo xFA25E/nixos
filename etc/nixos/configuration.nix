@@ -69,15 +69,65 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    checkbashisms dejavu-fonts dmenu dash emacs fd hack-font file git htop
-    iosevka leiningen libfixposix libreoffice-7.0.3.1 mpd mpop mpv msmtp mu pcre
-    pcre2 qutebrowser ripgrep rustup sbcl shellcheck sloccount stalonetray stow
-    telegram-desktop xdo xdotool youtube-dl ungoogled-chromium firefox
+    checkbashisms
+    dash
+    dejavu-fonts
+    dmenu
+    emacs
+    fd
+    feh
+    file
+    firefox
+    git
+    gnupg
+    hack-font
+    htop
+    iosevka
+    jq
+    ledger
+    leiningen
+    libfixposix
+    libreoffice-7.0.3.1
+    mpc
+    mpd
+    mpop
+    mpv
+    msmtp
+    mtpfs
+    mu
+    p7zip
+    pass-otp
+    password-store
+    pcre
+    pcre2
+    pinentry
+    pueue
+    pulsemixer
+    pwgen
+    qrencode
+    qtox
+    qutebrowser
+    ripgrep
+    rsync
+    rustup
+    sbcl
+    sdcv
+    shellcheck
+    simplescreenrecorder
+    sloccount
+    speedtest-cli
+    stalonetray
+    stow
+    sxiv
+    syncthing
+    transmission
+    ungoogled-chromium
+    woof
+    xclip
+    xz
+    youtube-dl
+    zip
 
-    zip xz password-store pass-otp
-    xclip woof aria2 transmission sxiv syncthing
-    simplescreenrecorder sdcv mtpfs rsync qtox qrencode
-    pwgen pulsemixer p7zip ledger jq
     # xgetres, task-spooler - no package?
   ];
 
