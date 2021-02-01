@@ -127,8 +127,6 @@
     xz
     youtube-dl
     zip
-
-    # xgetres, task-spooler - no package?
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
