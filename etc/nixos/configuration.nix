@@ -120,6 +120,7 @@
     stow
     sxiv
     syncthing
+    telegram-desktop
     transmission
     ungoogled-chromium
     woof
