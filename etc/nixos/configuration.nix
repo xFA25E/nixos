@@ -97,7 +97,7 @@
 
   services.xserver.displayManager.startx.enable = true;
   services.xserver.displayManager.defaultSession = "none";
-  services.xserver.windowManager.stumpwm.enable = true;
+  # services.xserver.windowManager.stumpwm.enable = true;
 
   # mkpasswd --method=sha-512 --stdin
   users = let secrets = import ./secrets.nix;
