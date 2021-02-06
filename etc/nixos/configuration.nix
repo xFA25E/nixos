@@ -39,25 +39,23 @@
       ./hardware-configuration.nix
     ];
 
-  # Use the GRUB 2 boot loader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
-  # boot.loader.grub.efiSupport = true; # uefi
-  # Define on which hard drive you want to install Grub.
-  boot.loader.grub.device = "/dev/sda";
-  # boot.loader.systemd-boot.enable = true; # uefi
+  boot.loader = {
+    grub = {
+      enable = true;
+      version = 2;
+      # efiSupport = true; # uefi
+      # Define on which hard drive you want to install Grub.
+      device = "/dev/sda";
+    };
+    # systemd-boot.enable = true; # uefi
+  };
 
-  networking.hostName = "nixos";
-  networking.wireless.enable = true;
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = "nixos";
+    wireless.enable = true;
+    networkmanager.enable = true;
+  };
 
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
-  networking.useDHCP = false;
-  networking.interfaces.enp0s3.useDHCP = true;
-
-  # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
     font = "Lat2-Terminus16";
@@ -82,39 +80,60 @@
     pinentryFlavor = "gnome3";
   };
 
-  # services.openssh.enable = true;
-  # services.openssh.permitRootLogin = "yes";
+  services = {
+    xserver = {
+      enable = true;
+      layout = "dvorak,ru";
+      xkbVariant = ",ruu";
+      xkbOptions = "ctrl:swapcaps,grp:shifts_toggle";
+      libinput.enable = true;
+      # windowManager.stumpwm.enable = true;
+      displayManager = {
+        startx.enable = true;
+        defaultSession = "none";
+      };
+    };
+
+    # openssh = {
+    #   enable = true;
+    #   permitRootLogin = "yes";
+    # };
+  };
 
   sound.enable = true;
   hardware.pulseaudio.enable = true;
 
-  services.xserver.enable = true;
-  services.xserver.layout = "dvorak,ru";
-  services.xserver.xkbVariant = ",ruu"
-  services.xserver.xkbOptions = "ctrl:swapcaps,grp:shifts_toggle";
-
-  services.xserver.libinput.enable = true;
-
-  services.xserver.displayManager.startx.enable = true;
-  services.xserver.displayManager.defaultSession = "none";
-  # services.xserver.windowManager.stumpwm.enable = true;
-
-  # mkpasswd --method=sha-512 --stdin
+  # mkpasswd -m sha-512 -s
   users = let secrets = import ./secrets.nix;
           in {
             defaultUserShell = pkgs.dash;
             mutableUsers = false;
-            users.root.hashedPassword = secrets.root.hashedPassword;
-            users.val = {
-              hashedPassword = secrets.val.hashedPassword;
-              isNormalUser = true;
-              uid = 1000;
-              extraGroups = [ "video" "wheel" "networkmanager" "audio"];
-              shell = pkgs.dash;
-              openssh.authorizedKeys.keys = [];
-              openssh.authorizedKeys.keyFiles = [];
+            users = {
+              root.hashedPassword = secrets.root.hashedPassword;
+              val = {
+                hashedPassword = secrets.val.hashedPassword;
+                isNormalUser = true;
+                uid = 1000;
+                extraGroups = [ "video" "wheel" "networkmanager" "audio"];
+                shell = pkgs.dash;
+                openssh.authorizedKeys = {
+                  keys = [];
+                  keyFiles = [];
+                };
+              };
             };
           };
+
+
+  security.sudo.configFile = ''
+    %wheel ALL=(ALL) ALL
+  '';
+
+  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
+  # Per-interface useDHCP will be mandatory in the future, so this generated config
+  # replicates the default behaviour.
+  networking.useDHCP = false;
+  networking.interfaces.enp0s3.useDHCP = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -123,10 +142,6 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "20.09"; # Did you read the comment?
-
-  security.sudo.configFile = ''
-    %wheel ALL=(ALL) ALL
-  '';
 
   # virtualisation.virtualbox.guest.enable = true; # virtalbox
 
