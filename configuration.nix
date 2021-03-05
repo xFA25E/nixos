@@ -64,21 +64,7 @@
 
   time.timeZone = "Europe/Rome";
 
-  environment.systemPackages = with pkgs; [
-    checkbashisms dash dejavu_fonts dmenu emacs fd feh file firefox git gnupg
-    hack-font htop iosevka jq ledger leiningen libfixposix libreoffice-fresh
-    mpc_cli mpd mpop mpv msmtp mtpfs mu p7zip pass-otp pass pcre pcre2 pinentry
-    pueue pulsemixer pwgen qrencode qtox qutebrowser ripgrep rsync rustup sbcl
-    sdcv shellcheck simplescreenrecorder sloccount speedtest-cli stalonetray
-    stow sxiv syncthing tdesktop transmission ungoogled-chromium woof xclip xz
-    youtube-dl zip
-  ];
-
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-    pinentryFlavor = "gnome3";
-  };
+  environment.systemPackages = with pkgs; [];
 
   services = {
     xserver = {
