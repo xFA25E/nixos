@@ -73,7 +73,6 @@
       xkbVariant = ",ruu";
       xkbOptions = "ctrl:swapcaps,grp:shifts_toggle";
       libinput.enable = true;
-      # windowManager.stumpwm.enable = true;
       displayManager = {
         startx.enable = true;
         defaultSession = "none";
@@ -90,26 +89,26 @@
   hardware.pulseaudio.enable = true;
 
   # mkpasswd -m sha-512 -s
-  users = let secrets = import ./secrets.nix;
-          in {
-            defaultUserShell = pkgs.dash;
-            mutableUsers = false;
-            users = {
-              root.hashedPassword = secrets.root.hashedPassword;
-              val = {
-                hashedPassword = secrets.val.hashedPassword;
-                isNormalUser = true;
-                uid = 1000;
-                extraGroups = [ "video" "wheel" "networkmanager" "audio"];
-                shell = pkgs.dash;
-                openssh.authorizedKeys = {
-                  keys = [];
-                  keyFiles = [];
-                };
-              };
-            };
-          };
-
+  users = let
+    secrets = import ./secrets.nix;
+  in {
+    defaultUserShell = pkgs.dash;
+    mutableUsers = false;
+    users = {
+      root.hashedPassword = secrets.root.hashedPassword;
+      val = {
+        hashedPassword = secrets.val.hashedPassword;
+        isNormalUser = true;
+        uid = 1000;
+        extraGroups = [ "video" "wheel" "networkmanager" "audio"];
+        shell = pkgs.dash;
+        openssh.authorizedKeys = {
+          keys = [];
+          keyFiles = [];
+        };
+      };
+    };
+  };
 
   security.sudo.configFile = ''
     %wheel ALL=(ALL) ALL
