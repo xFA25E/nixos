@@ -1,0 +1,97 @@
+#!/bin/sh
+
+set -o nounset
+set -o errexit
+# set -o xtrace
+
+if test "$#" = 0; then
+    printf '>>> Welcome to NixOS installation script!\n\n'
+    printf 'To configure wifi:\n'
+    printf '# %s wifi\n\n' "$(basename "$0")"
+    printf 'To partition uefi:\n'
+    printf '# %s uefi [SWAP 8GiB by default]\n\n' "$(basename "$0")"
+    printf 'To partition mbr:\n'
+    printf '# %s mbr [SWAP 2GiB by default]\n\n' "$(basename "$0")"
+    printf 'To install:\n'
+    printf '# %s install\n\n' "$(basename "$0")"
+    exit 1
+fi
+
+case "${1}" in
+    wifi)
+        printf '>>> Wifi configuration!\n\n'
+        ip a
+        printf 'Interface: '
+        read interface
+        printf 'SSID: '
+        read ssid
+        printf 'Key: '
+        read key
+        wpa_passphrase "${ssid}" "${key}" >./wifi.conf
+        wpa_supplicant -B -i "${interface}" -c ./wifi.conf
+        ;;
+    uefi)
+        parted /dev/sda -- mklabel gpt
+        parted /dev/sda -- mkpart primary 512MiB -8GiB
+        parted /dev/sda -- mkpart primary linux-swap -8GiB 100%
+        parted /dev/sda -- mkpart ESP fat32 1MiB 512MiB
+        parted /dev/sda -- set 3 boot on
+        mkfs.ext4 -L nixos /dev/sda1
+        mkswap -L swap /dev/sda2
+        mkfs.fat -F 32 -n boot /dev/sda3
+        mount /dev/disk/by-label/nixos /mnt
+        mkdir -p /mnt/boot
+        mount /dev/disk/by-label/boot /mnt/boot
+        swapon /dev/sda2
+        nixos-generate-config --root /mnt
+        ;;
+    mbr)
+        parted /dev/sda -- mklabel msdos
+        parted /dev/sda -- mkpart primary 1MiB "-${2:-2GiB}"
+        parted /dev/sda -- mkpart primary linux-swap "-${2:-2GiB}" 100%
+        mkfs.ext4 -L nixos /dev/sda1
+        mkswap -L swap /dev/sda2
+        mount /dev/disk/by-label/nixos /mnt
+        swapon /dev/sda2
+        nixos-generate-config --root /mnt
+        ;;
+    install)
+        printf '>>> Configuring the environment\n'
+        printf '>>> Mapping ctrl to caps\n'
+        loadkeys ./ctrl2caps.map
+        printf '>>> Installing emacs\n'
+        nix-build emacs.nix
+
+        printf '>>> Install configuration.nix:'
+        mv /mnt/etc/nixos/configuration.nix /mnt/etc/nixos/orig_configuration.nix
+        mv ./configuration.nix /mnt/etc/nixos/configuration.nix
+        printf 'Root password: '
+        read root_password
+        printf 'User password: '
+        read user_password
+        cat >/mnt/etc/nixos/secrets.nix <<-EOF
+{
+  root.hashedPassword = "$(mkpasswd -m sha-512 "${root_password}")";
+  val.hashedPassword = "$(mkpasswd -m sha-512 "${user_password}")";
+}
+EOF
+        chmod 400 /mnt/etc/nixos/secrets.nix
+        ./result/bin/emacs /mnt/etc/nixos/configuration.nix /mnt/etc/nixos/orig_configuration.nix
+
+        printf 'ALL SET! Now run:\n'
+        printf '# nixos-install\n'
+        printf '# %s clone\n' "$(basename "$0")"
+        printf '# reboot\n\n'
+        printf '> Login\n\n'
+        printf '$ cd .config/nixpkgs\n'
+        printf '$ ./install\n\n'
+        printf '>>> Enjoy! :)\n'
+        ;;
+    clone)
+        git clone "https://github.com/xFA25E/nixpkgs-config" /mnt/home/val/.config/nixpkgs
+        ;;
+    *)
+        printf 'Select installation type! For more details:\n'
+        printf '# %s\n'
+        exit 1
+esac

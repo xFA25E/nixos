@@ -1,4 +1,0 @@
-{
-  root.hashedPassword = "";
-  val.hashedPassword = "";
-}
