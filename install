@@ -50,8 +50,6 @@ case "${1}" in
         printf '>>> Install configuration.nix:'
         mv /mnt/etc/nixos/configuration.nix /mnt/etc/nixos/orig_configuration.nix
         mv ./configuration.nix /mnt/etc/nixos/configuration.nix
-        printf 'Root password: '
-        read root_password
         printf 'User password: '
         read user_password
         cat >/mnt/etc/nixos/secrets.nix <<-EOF

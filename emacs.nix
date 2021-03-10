@@ -1,6 +1,6 @@
 { pkgs ? import <nixos> {} }:
 let
-  config = pkgs.writeText "default.el" ''
+  config = pkgs.writeTextDir "share/emacs/site-lisp/default.el" ''
     (setq make-backup-files nil)
     (defun delete-orig-configuration ()
       (delete-file "/mnt/etc/nixos/orig_configuration.nix"))
@@ -19,9 +19,5 @@ let
     (add-hook 'kill-emacs-hook #'delete-orig-configuration)
   '';
 in (pkgs.emacsPackagesGen pkgs.emacs-nox).emacsWithPackages (epkgs: (with epkgs.melpaPackages; [
-  (pkgs.runCommand "default.el" {} ''
-    mkdir -p $out/share/emacs/site-lisp
-    cp ${config} $out/share/emacs/site-lisp/default.el
-  '')
-  nix-mode
+  config nix-mode
 ]))
