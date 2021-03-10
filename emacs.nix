@@ -22,6 +22,6 @@ in (pkgs.emacsPackagesGen pkgs.emacs-nox).emacsWithPackages (epkgs: (with epkgs.
   (pkgs.runCommand "default.el" {} ''
     mkdir -p $out/share/emacs/site-lisp
     cp ${config} $out/share/emacs/site-lisp/default.el
-'')
+  '')
   nix-mode
 ]))
