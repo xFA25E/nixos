@@ -18,7 +18,7 @@ let
     (electric-pair-mode)
     (add-hook 'kill-emacs-hook #'delete-orig-configuration)
   '';
-in pkgs.emacsWithPackages (epkgs: (with epkgs.melpaPackages; [
+in (pkgs.emacsPackagesGen pkgs.emacs-nox).emacsWithPackages (epkgs: (with epkgs.melpaPackages; [
   (pkgs.runCommand "default.el" {} ''
     mkdir -p $out/share/emacs/site-lisp
     cp ${config} $out/share/emacs/site-lisp/default.el
