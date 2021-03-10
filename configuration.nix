@@ -63,7 +63,7 @@
   users = let
     secrets = import ./secrets.nix;
   in {
-    defaultUserShell = pkgs.dash;
+    # defaultUserShell = pkgs.dash;
     mutableUsers = false;
     users = {
       root.hashedPassword = secrets.root.hashedPassword;
@@ -72,7 +72,7 @@
         isNormalUser = true;
         uid = 1000;
         extraGroups = [ "video" "wheel" "networkmanager" "audio"];
-        shell = pkgs.dash;
+        # shell = pkgs.dash;
         openssh.authorizedKeys = {
           keys = [];
           keyFiles = [];
