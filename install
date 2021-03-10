@@ -2,7 +2,6 @@
 
 set -o nounset
 set -o errexit
-# set -o xtrace
 
 if test "$#" = 0; then
     printf '>>> Welcome to NixOS installation script!\n\n'
@@ -56,28 +55,21 @@ case "${1}" in
         printf 'User password: '
         read user_password
         cat >/mnt/etc/nixos/secrets.nix <<-EOF
-{
-  root.hashedPassword = "$(mkpasswd -m sha-512 "${root_password}")";
-  val.hashedPassword = "$(mkpasswd -m sha-512 "${user_password}")";
-}
+"$(mkpasswd -m sha-512 "${user_password}")"
 EOF
         chmod 400 /mnt/etc/nixos/secrets.nix
         ./result/bin/emacs /mnt/etc/nixos/configuration.nix /mnt/etc/nixos/orig_configuration.nix
 
         printf 'ALL SET! Now run:\n'
         printf '# nixos-install\n'
-        printf '# %s clone\n' "$(basename "$0")"
         printf '# reboot\n\n'
         printf '> Login\n\n'
-        printf '$ cd .config/nixpkgs\n'
+        printf '$ nix-shell -p git --run "git clone ''https://github.com/xFA25E/nixpkgs-config'' .config/nixpkgs"\n'
         printf '$ ./install\n\n'
         printf '>>> Enjoy! :)\n'
         ;;
-    clone)
-        git clone "https://github.com/xFA25E/nixpkgs-config" /mnt/home/val/.config/nixpkgs
-        ;;
     *)
         printf 'Select installation type! For more details:\n'
-        printf '# %s\n'
+        printf '# %s\n' "$(basename $0)"
         exit 1
 esac

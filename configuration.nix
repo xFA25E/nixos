@@ -23,7 +23,6 @@
 
   networking = {
     hostName = "nixos";
-    # wireless.enable = true;
     networkmanager.enable = true;
   };
 
@@ -61,18 +60,17 @@
 
   # mkpasswd -m sha-512 -s
   users = let
-    secrets = import ./secrets.nix;
+    password = import ./secrets.nix;
   in {
-    # defaultUserShell = pkgs.dash;
+    defaultUserShell = pkgs.dash;
     mutableUsers = false;
     users = {
-      root.hashedPassword = secrets.root.hashedPassword;
       val = {
-        hashedPassword = secrets.val.hashedPassword;
+        hashedPassword = password;
         isNormalUser = true;
         uid = 1000;
-        extraGroups = [ "video" "wheel" "networkmanager" "audio"];
-        # shell = pkgs.dash;
+        extraGroups = [ "video" "wheel" "networkmanager" "audio" ];
+        shell = pkgs.dash;
         openssh.authorizedKeys = {
           keys = [];
           keyFiles = [];
