@@ -17,8 +17,8 @@ fi
 case "${1}" in
     uefi)
         parted /dev/sda -- mklabel gpt
-        parted /dev/sda -- mkpart primary 512MiB -8GiB
-        parted /dev/sda -- mkpart primary linux-swap -8GiB 100%
+        parted /dev/sda -- mkpart primary 512MiB "-${2:-8GB}"
+        parted /dev/sda -- mkpart primary linux-swap "-${2:-8GB}" 100%
         parted /dev/sda -- mkpart ESP fat32 1MiB 512MiB
         parted /dev/sda -- set 3 boot on
         mkfs.ext4 -L nixos /dev/sda1
@@ -32,8 +32,8 @@ case "${1}" in
         ;;
     mbr)
         parted /dev/sda -- mklabel msdos
-        parted /dev/sda -- mkpart primary 1MiB "-${2:-2GiB}"
-        parted /dev/sda -- mkpart primary linux-swap "-${2:-2GiB}" 100%
+        parted /dev/sda -- mkpart primary 1MiB "-${2:-2GB}"
+        parted /dev/sda -- mkpart primary linux-swap "-${2:-2GB}" 100%
         mkfs.ext4 -L nixos /dev/sda1
         mkswap -L swap /dev/sda2
         mount /dev/disk/by-label/nixos /mnt
