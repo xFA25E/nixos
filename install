@@ -5,12 +5,12 @@ set -o errexit
 
 if test "$#" = 0; then
     printf '>>> Welcome to NixOS installation script!\n\n'
-    printf 'To partition uefi:\n'
-    printf '# %s uefi [SWAP 8GiB by default]\n\n' "$(basename "$0")"
-    printf 'To partition mbr:\n'
-    printf '# %s mbr [SWAP 2GiB by default]\n\n' "$(basename "$0")"
-    printf 'To install:\n'
-    printf '# %s install\n\n' "$(basename "$0")"
+    printf '>>> To partition uefi:\n'
+    printf '>>> # %s uefi [SWAP 8GiB by default]\n\n' "$(basename "$0")"
+    printf '>>> To partition mbr:\n'
+    printf '>>> # %s mbr [SWAP 2GiB by default]\n\n' "$(basename "$0")"
+    printf '>>> To install:\n'
+    printf '>>> # %s install\n\n' "$(basename "$0")"
     exit 1
 fi
 
@@ -50,24 +50,24 @@ case "${1}" in
         printf '>>> Install configuration.nix:'
         mv /mnt/etc/nixos/configuration.nix /mnt/etc/nixos/orig_configuration.nix
         mv ./configuration.nix /mnt/etc/nixos/configuration.nix
-        printf 'User password: '
+        printf '>>> User password: '
         read user_password
-        cat >/mnt/etc/nixos/secrets.nix <<-EOF
-"$(mkpasswd -m sha-512 "${user_password}")"
-EOF
+        echo "\"$(mkpasswd -m sha-512 "${user_password}")\"" >/mnt/etc/nixos/secrets.nix
+
         chmod 400 /mnt/etc/nixos/secrets.nix
         ./result/bin/emacs /mnt/etc/nixos/configuration.nix /mnt/etc/nixos/orig_configuration.nix
 
-        printf 'ALL SET! Now run:\n'
-        printf '# nixos-install\n'
-        printf '# reboot\n\n'
-        printf '> Login\n\n'
-        printf '$ nix-shell -p git --run "git clone ''https://github.com/xFA25E/nixpkgs-config'' .config/nixpkgs"\n'
-        printf '$ ./install\n\n'
+        printf '>>> ALL SET! Now run:\n'
+        printf '>>> # nixos-install\n'
+        printf '>>> # reboot\n\n'
+        printf '>>> Login\n\n'
+        printf '>>> $ nix-shell -p git --run "git clone ''https://github.com/xFA25E/nixpkgs-config'' .config/nixpkgs"\n'
+        printf '>>> $ cd .config/nixpkgs"\n'
+        printf '>>> $ ./install\n\n'
         printf '>>> Enjoy! :)\n'
         ;;
     *)
-        printf 'Select installation type! For more details:\n'
-        printf '# %s\n' "$(basename $0)"
+        printf '>>> Select installation type! For more details:\n'
+        printf '>>> # %s\n' "$(basename $0)"
         exit 1
 esac
