@@ -58,6 +58,8 @@
   sound.enable = true;
   hardware.pulseaudio.enable = true;
 
+  nix.trustedUsers = [ "root" "val" ];
+
   # mkpasswd -m sha-512 -s
   users = let
     password = import ./secrets.nix;
