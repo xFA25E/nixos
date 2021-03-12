@@ -28,10 +28,6 @@
 
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
-    colors = (with (import ./colors.nix); [
-      base00 base08 base0B base0A base0D base0E base0C base05 base03 base08
-      base0B base0A base0D base0E base0C base07
-    ]);
     font = "Lat2-Terminus16";
     keyMap = "dvorak";
   };
