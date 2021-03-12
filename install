@@ -47,7 +47,7 @@ case "${1}" in
         printf '>>> Installing emacs\n'
         nix-build emacs.nix
 
-        printf '>>> Install configuration.nix:'
+        printf '>>> Install configuration.nix:\n'
         mv /mnt/etc/nixos/configuration.nix /mnt/etc/nixos/orig_configuration.nix
         mv ./configuration.nix /mnt/etc/nixos/configuration.nix
         mv ./colors.nix /mnt/etc/nixos/colors.nix

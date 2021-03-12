@@ -18,6 +18,6 @@ let
     (electric-pair-mode)
     (add-hook 'kill-emacs-hook #'delete-orig-configuration)
   '';
-in (pkgs.emacsPackagesGen pkgs.emacs-nox).emacsWithPackages (epkgs: (with epkgs.melpaPackages; [
+in (pkgs.emacsPackagesGen pkgs.emacs-nox).emacsWithPackages (epkgs: (with epkgs; [
   config nix-mode
 ]))
