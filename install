@@ -6,9 +6,9 @@ set -o errexit
 if test "$#" = 0; then
     printf '>>> Welcome to NixOS installation script!\n\n'
     printf '>>> To partition uefi:\n'
-    printf '>>> # %s uefi [SWAP 8GiB by default]\n\n' "$(basename "$0")"
+    printf '>>> # %s uefi [SWAP 8GB by default]\n\n' "$(basename "$0")"
     printf '>>> To partition mbr:\n'
-    printf '>>> # %s mbr [SWAP 2GiB by default]\n\n' "$(basename "$0")"
+    printf '>>> # %s mbr [SWAP 2GB by default]\n\n' "$(basename "$0")"
     printf '>>> To install:\n'
     printf '>>> # %s install\n\n' "$(basename "$0")"
     exit 1
