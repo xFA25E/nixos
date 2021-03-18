@@ -50,6 +50,7 @@ case "${1}" in
         printf '>>> Install configuration.nix:\n'
         mv /mnt/etc/nixos/configuration.nix /mnt/etc/nixos/orig_configuration.nix
         mv ./configuration.nix /mnt/etc/nixos/configuration.nix
+        mv ./ctrl2caps.map /mnt/etc/nixos/ctrl2caps.map
         printf '>>> User password: '
         read user_password
         echo "\"$(mkpasswd -m sha-512 "${user_password}")\"" >/mnt/etc/nixos/secrets.nix
