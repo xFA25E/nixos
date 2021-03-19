@@ -87,7 +87,7 @@ case "${1}" in
         chmod 400 /mnt/etc/nixos/secrets.nix
 
         if grep crypted /mnt/etc/nixos/hardware-configuration.nix; then
-            printf ' // {\n  fileSystems."/".device = "/dev/mapper/crypted";\n}\n' >>/mnt/etc/nixos/hardware-configuration.nix
+            printf ' // {\n  fileSystems."/".device = "/dev/mapper/crypted";\n  boot.loader.grub.enableCryptodisk = true;\n}\n' >>/mnt/etc/nixos/hardware-configuration.nix
         fi
 
         ./result/bin/emacs /mnt/etc/nixos/configuration.nix /mnt/etc/nixos/orig_configuration.nix
