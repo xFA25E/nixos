@@ -38,7 +38,7 @@ case "${1}" in
         parted /dev/sda -- set 3 boot on
         cryptsetup luksFormat /dev/sda1
         cryptsetup luksOpen /dev/sda1 crypted
-        mkfs.ext4 -L nixos /dev/mapped/crypted
+        mkfs.ext4 -L nixos /dev/mapper/crypted
         mkswap -L swap /dev/sda2
         mkfs.fat -F 32 -n boot /dev/sda3
         mount /dev/disk/by-label/nixos /mnt
@@ -63,7 +63,7 @@ case "${1}" in
         parted /dev/sda -- mkpart primary linux-swap "-${2:-2GB}" 100%
         cryptsetup luksFormat /dev/sda1
         cryptsetup luksOpen /dev/sda1 crypted
-        mkfs.ext4 -L nixos /dev/mapped/crypted
+        mkfs.ext4 -L nixos /dev/mapper/crypted
         mkswap -L swap /dev/sda2
         mount /dev/disk/by-label/nixos /mnt
         swapon /dev/sda2
