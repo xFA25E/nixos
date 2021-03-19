@@ -59,8 +59,8 @@ case "${1}" in
         ;;
     mbrc)
         parted /dev/sda -- mklabel msdos
-        parted /dev/sda -- mkpart primary 512MiB "-${2:-8GB}"
-        parted /dev/sda -- mkpart primary linux-swap "-${2:-8GB}" 100%
+        parted /dev/sda -- mkpart primary 512MiB "-${2:-2GB}"
+        parted /dev/sda -- mkpart primary linux-swap "-${2:-2GB}" 100%
         parted /dev/sda -- mkpart primary fat32 1MiB 512MiB
         parted /dev/sda -- set 3 boot on
         cryptsetup luksFormat /dev/sda1
@@ -92,7 +92,7 @@ case "${1}" in
         chmod 400 /mnt/etc/nixos/secrets.nix
 
         if grep crypted /mnt/etc/nixos/hardware-configuration.nix; then
-            printf ' // {\n  fileSystems."/".device = "/dev/mapper/crypted";\n  boot.loader.grub.enableCryptodisk = true;\n}\n' >>/mnt/etc/nixos/hardware-configuration.nix
+            printf ' // {\n  fileSystems."/".device = "/dev/mapper/crypted";\n}\n' >>/mnt/etc/nixos/hardware-configuration.nix
         fi
 
         ./result/bin/emacs /mnt/etc/nixos/configuration.nix /mnt/etc/nixos/orig_configuration.nix
