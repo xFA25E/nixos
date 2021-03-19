@@ -65,7 +65,7 @@ case "${1}" in
         parted /dev/sda -- mklabel msdos
         parted /dev/sda -- mkpart primary 512MiB 100%
         parted /dev/sda -- mkpart primary fat32 1MiB 512MiB
-        parted /dev/sda -- set 3 boot on
+        parted /dev/sda -- set 2 boot on
 
         cryptsetup luksFormat /dev/sda1
         cryptsetup luksOpen /dev/sda1 enc-pv
