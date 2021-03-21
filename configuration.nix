@@ -62,7 +62,6 @@
   users = let
     password = import ./secrets.nix;
   in {
-    defaultUserShell = pkgs.dash;
     mutableUsers = false;
     users = {
       val = {
@@ -70,7 +69,6 @@
         isNormalUser = true;
         uid = 1000;
         extraGroups = [ "video" "wheel" "networkmanager" "audio" ];
-        shell = pkgs.dash;
         openssh.authorizedKeys = {
           keys = [];
           keyFiles = [];
