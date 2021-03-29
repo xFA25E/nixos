@@ -12,13 +12,13 @@
 
   boot.loader = {
     grub = {
-      enable = true;
-      version = 2;
       # efiSupport = true; # uefi
       # Define on which hard drive you want to install Grub.
       device = "/dev/sda";
+      # device = "nodev"; # uefi
     };
     # systemd-boot.enable = true; # uefi
+    # efi.canTouchEfiVariables = true; # uefi
   };
 
   networking = {
