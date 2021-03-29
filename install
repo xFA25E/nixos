@@ -35,15 +35,6 @@ case "${1}" in
         nixos-generate-config --root /mnt
         ;;
     uefic)
-        mkfs.ext4 -L nixos /dev/mapper/crypted
-        mkswap -L swap /dev/sda2
-        mkfs.fat -F 32 -n boot /dev/sda3
-        mount /dev/disk/by-label/nixos /mnt
-        mkdir -p /mnt/boot
-        mount /dev/disk/by-label/boot /mnt/boot
-        swapon /dev/sda2
-        nixos-generate-config --root /mnt
-
         parted /dev/sda -- mklabel gpt
         parted /dev/sda -- mkpart primary 512MiB 100%
         parted /dev/sda -- mkpart ESP fat32 1MiB 512MiB
@@ -145,6 +136,7 @@ EOF
         fi
 
         ./result/bin/emacs /mnt/etc/nixos/configuration.nix /mnt/etc/nixos/orig_configuration.nix
+        rm /mnt/etc/nixos/orig_configuration.nix
 
         printf '>>> ALL SET! Now run:\n'
         printf '>>> # nixos-install\n'
