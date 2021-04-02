@@ -2,8 +2,6 @@
 let
   config = pkgs.writeTextDir "share/emacs/site-lisp/default.el" ''
     (setq make-backup-files nil)
-    (defun delete-orig-configuration ()
-      (delete-file "/mnt/etc/nixos/orig_configuration.nix"))
 
     (defun backward-kill-word-or-region (&optional count)
       (interactive "p")
@@ -16,7 +14,6 @@ let
     (define-key isearch-mode-map (kbd "C-h") #'isearch-delete-char)
 
     (electric-pair-mode)
-    (add-hook 'kill-emacs-hook #'delete-orig-configuration)
   '';
 in (pkgs.emacsPackagesGen pkgs.emacs-nox).emacsWithPackages (epkgs: (with epkgs; [
   config nix-mode
