@@ -110,5 +110,6 @@
   system.stateVersion = "20.09"; # Did you read the comment?
 
   # virtualisation.virtualbox.guest.enable = true; # virtalbox
-
+  # virtualisation.docker.enable = true; # add docker to users
+  # programs.adb.enable = true; # add adbusers to users
 }
