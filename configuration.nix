@@ -21,6 +21,13 @@
     # efi.canTouchEfiVariables = true; # uefi
   };
 
+  fileSystems."/tmp" = {
+    device = "tmpfs";
+    fsType = "tmpfs";
+    options = [ "nosuid" "nodev" "noatime" ];
+    noCheck = true;
+  };
+
   networking = {
     hostName = "nixos";
     networkmanager.enable = true;
@@ -111,5 +118,6 @@
 
   # virtualisation.virtualbox.guest.enable = true; # virtalbox
   # virtualisation.docker.enable = true; # add docker to users
+  # virtualisation.docker.enableOnBoot = false;
   # programs.adb.enable = true; # add adbusers to users
 }
