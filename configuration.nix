@@ -10,22 +10,17 @@
       ./hardware-configuration.nix
     ];
 
-  boot.loader = {
-    grub = {
-      # efiSupport = true; # uefi
-      # Define on which hard drive you want to install Grub.
-      device = "/dev/sda";
-      # device = "nodev"; # uefi
+  boot = {
+    loader = {
+      grub = {
+        efiSupport = true; # uefi
+        # Define on which hard drive you want to install Grub.
+        device = "nodev"; # uefi
+      };
+      systemd-boot.enable = true; # uefi
+      efi.canTouchEfiVariables = true; # uefi
     };
-    # systemd-boot.enable = true; # uefi
-    # efi.canTouchEfiVariables = true; # uefi
-  };
-
-  fileSystems."/tmp" = {
-    device = "tmpfs";
-    fsType = "tmpfs";
-    options = [ "nosuid" "nodev" "noatime" ];
-    noCheck = true;
+    tmpOnTmpfs = true;
   };
 
   networking = {
