@@ -61,13 +61,11 @@
   hardware.pulseaudio.enable = true;
 
   # mkpasswd -m sha-512 -s
-  users = let
-    password = import ./secrets.nix;
-  in {
+  users = {
     mutableUsers = false;
     users = {
       val = {
-        hashedPassword = password;
+        hashedPassword = import ./secrets.nix;
         isNormalUser = true;
         uid = 1000;
         extraGroups = [ "video" "wheel" "networkmanager" "audio" ];
@@ -77,6 +75,25 @@
         };
       };
     };
+
+    # extraUsers = let
+    #   buildUser = (i: {
+    #     "guixbuilder${i}" = {                   # guixbuilder$i
+    #       group = "guixbuild";                  # -g guixbuild
+    #       extraGroups = ["guixbuild"];          # -G guixbuild
+    #       home = "/var/empty";                  # -d /var/empty
+    #       shell = pkgs.nologin;                 # -s `which nologin`
+    #       description = "Guix build user ${i}"; # -c "Guix buid user $i"
+    #       isSystemUser = true;                  # --system
+    #     };
+    #   }); in
+    #   pkgs.lib.fold (str: acc: acc // buildUser str)
+    #     {}
+    #     (map (pkgs.lib.fixedWidthNumber 2) (builtins.genList (n: n+1) 10));
+
+    # extraGroups.guixbuild = {
+    #   name = "guixbuild";
+    # };
   };
 
   security.sudo.configFile = ''
@@ -94,6 +111,20 @@
       serviceConfig = {
         ExecStart = "${pkgs.kbd}/bin/loadkeys ${./ctrl2caps.map}";
       };
+    };
+
+    "guix-daemon" = {
+      enable = false;
+      description = "Build daemon for GNU Guix";
+      serviceConfig = {
+        ExecStart = "/var/guix/profiles/per-user/root/current-guix/bin/guix-daemon --build-users-group=guixbuild";
+        Environment="GUIX_LOCPATH=/root/.guix-profile/lib/locale";
+        RemainAfterExit="yes";
+        StandardOutput="syslog";
+        StandardError="syslog";
+        TaskMax= "8192";
+      };
+      wantedBy = [ "multi-user.target" ];
     };
   };
 
