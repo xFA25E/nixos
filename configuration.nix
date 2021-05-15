@@ -20,7 +20,7 @@
       systemd-boot.enable = true; # uefi
       efi.canTouchEfiVariables = true; # uefi
     };
-    tmpOnTmpfs = true;
+    cleanTmpDir = true;
   };
 
   networking = {
