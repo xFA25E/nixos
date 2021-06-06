@@ -25,6 +25,17 @@
 
   networking = {
     firewall.allowedTCPPorts = [ 8080 8000 ];
+    hosts = {
+      "0.0.0.0" = [
+        "rewards.brave.com"
+        "api.rewards.brave.com"
+        "grant.rewards.brave.com"
+        "variations.brave.com"
+        "laptop-updates.brave.com"
+        "static1.brave.com"
+        "brave-core-ext.s3.brave.com"
+      ];
+    };
     hostName = "nixos";
     networkmanager.enable = true;
   };
