@@ -36,6 +36,12 @@
         "brave-core-ext.s3.brave.com"
       ];
     };
+    hostFiles = let
+      stevenblank = pkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/StevenBlack/hosts/70884b069ed818c385382f7608e1e28f777cc5f3/alternates/gambling-porn/hosts";
+        sha256 = "193wr6grgfz3jwhn2i597k98nmd6chdky1aw64qnlp3ixv5fyvb2";
+      };
+    in [ "${stevenblank}" ];
     hostName = "nixos";
     networkmanager.enable = true;
   };
